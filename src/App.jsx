@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import emailjs from "@emailjs/browser";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 const NAV_LINKS = ["About", "Skills", "Experience", "Projects", "Education", "Contact"];
@@ -143,7 +144,7 @@ const EDUCATION = {
 };
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
-function useInView(threshold = 0.15) {
+function useInView(threshold = 0.05) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -417,7 +418,7 @@ function About() {
         <div className="meta-row" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginTop: 40, paddingTop: 28, borderTop: "1px solid rgba(255,255,255,0.08)", opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.2s" }}>
           {[["📍 Location", "Bengaluru, India"], ["🟢 Status", "Open to Work"], ["🎯 Target", "Full-Stack / React Roles"], ["⚡ Available", "Open to opportunities" /* TODO: put real notice period */]].map(([k, v]) => (
             <div key={k}>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{k}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>{k}</div>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, color: "rgba(255,255,255,0.8)" }}>{v}</div>
             </div>
           ))}
@@ -546,10 +547,10 @@ function Projects() {
             ))}
           </div>
         </div>
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.35)", marginBottom: 24, opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.15s" }}>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", marginBottom: 24, opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.15s" }}>
           {filtered.length} project{filtered.length !== 1 ? "s" : ""} · Client work and personal projects
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 16, opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.2s" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(300px,100%),1fr))", gap: 16, opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.2s" }}>
           {filtered.map((p, i) => (
             <div key={i} style={{
               background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
@@ -573,7 +574,7 @@ function Projects() {
                       onMouseLeave={e => e.currentTarget.style.background = "rgba(226,255,93,0.08)"}
                     >Live Site ↗</a>
                   ) : !p.repo ? (
-                    <span style={{ padding: "4px 12px", borderRadius: 20, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.35)" }}>Internal</span>
+                    <span style={{ padding: "4px 12px", borderRadius: 20, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.55)" }}>Internal</span>
                   ) : null}
                   {p.repo && (
                     <a href={p.repo} target="_blank" rel="noreferrer" style={{
@@ -589,7 +590,7 @@ function Projects() {
                 </div>
               </div>
               <div>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.35)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{p.category}</div>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.55)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>{p.category}</div>
                 <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 17, color: "#fff", lineHeight: 1.2 }}>{p.title}</div>
               </div>
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.75, flex: 1 }}>{p.desc}</p>
@@ -601,7 +602,7 @@ function Projects() {
                 {p.stats.map((s, j) => (
                   <div key={j}>
                     <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 15, color: "#e2ff5d" }}>{s.v}</div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.35)", marginTop: 1 }}>{s.l}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.55)", marginTop: 1 }}>{s.l}</div>
                   </div>
                 ))}
               </div>
@@ -635,7 +636,7 @@ function Education() {
           <div style={{ fontSize: 30, marginBottom: 14 }}>🎓</div>
           <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: "clamp(15px,3vw,20px)", color: "#fff", marginBottom: 6 }}>{EDUCATION.degree}</div>
           <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.55)", marginBottom: 4 }}>{EDUCATION.college}</div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.35)", marginBottom: 18 }}>{EDUCATION.location} · {EDUCATION.period}</div>
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", marginBottom: 18 }}>{EDUCATION.location} · {EDUCATION.period}</div>
           <div style={{ display: "inline-block", background: "rgba(226,255,93,0.1)", border: "1px solid rgba(226,255,93,0.25)", borderRadius: 8, padding: "6px 14px", fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600, color: "#e2ff5d", marginBottom: 18 }}>{EDUCATION.cgpa}</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
             {EDUCATION.subjects.map(s => (
@@ -656,27 +657,30 @@ const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 function Contact() {
   const [ref, vis] = useInView();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [honeypot, setHoneypot] = useState("");
   const [status, setStatus] = useState("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
-  useEffect(() => {
-    if (window.emailjs) return;
-    const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
-    script.onload = () => window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-    document.head.appendChild(script);
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!window.emailjs) { setErrorMsg("Email service not loaded. Try again."); setStatus("error"); return; }
+    if (honeypot) {
+      setStatus("success");
+      setForm({ name: "", email: "", subject: "", message: "" });
+      setHoneypot("");
+      return;
+    }
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      setErrorMsg("Something went wrong. Please email me directly at rjvi1771@gmail.com");
+      setStatus("error");
+      return;
+    }
     setStatus("loading");
     try {
-      await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         from_name: form.name, from_email: form.email,
         subject: form.subject || "Portfolio Inquiry",
         message: form.message, reply_to: form.email,
-      });
+      }, { publicKey: EMAILJS_PUBLIC_KEY });
       setStatus("success");
       setForm({ name: "", email: "", subject: "", message: "" });
     } catch {
@@ -708,24 +712,38 @@ function Contact() {
               { icon: "✉️", label: "Email", val: "rjvi1771@gmail.com", href: "mailto:rjvi1771@gmail.com" },
               { icon: "💼", label: "LinkedIn", val: "linkedin.com/in/rj-vijay-a60632217", href: "https://linkedin.com/in/rj-vijay-a60632217" },
               { icon: "🐙", label: "GitHub", val: "github.com/rjvi1771", href: "https://github.com/rjvi1771" },
-              { icon: "📍", label: "Location", val: "Bengaluru · Open to Remote" },
+              { icon: "📍", label: "Location", val: "Bengaluru · Open to Remote", href: null },
               { icon: "📞", label: "Phone", val: "+91 63632 76991", href: "tel:+916363276991" },
-            ].map((c, i) => (
-              <a key={i} href={c.href || "#"} target={c.href && !c.href.startsWith("mailto") && !c.href.startsWith("tel") ? "_blank" : "_self"} rel="noreferrer" style={{
-                background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 12, padding: "14px 18px", display: "flex", gap: 12, alignItems: "center",
-                textDecoration: "none", transition: "border-color 0.2s",
-              }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(226,255,93,0.3)"}
-                onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"}
-              >
-                <span style={{ fontSize: 18 }}>{c.icon}</span>
-                <div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2 }}>{c.label}</div>
-                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)" }}>{c.val}</div>
+            ].map((c, i) => {
+              const content = (
+                <>
+                  <span style={{ fontSize: 18 }}>{c.icon}</span>
+                  <div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 2 }}>{c.label}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)" }}>{c.val}</div>
+                  </div>
+                </>
+              );
+              return c.href ? (
+                <a key={i} href={c.href} target={!c.href.startsWith("mailto") && !c.href.startsWith("tel") ? "_blank" : "_self"} rel="noreferrer" style={{
+                  background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 12, padding: "14px 18px", display: "flex", gap: 12, alignItems: "center",
+                  textDecoration: "none", transition: "border-color 0.2s",
+                }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(226,255,93,0.3)"}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"}
+                >
+                  {content}
+                </a>
+              ) : (
+                <div key={i} style={{
+                  background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 12, padding: "14px 18px", display: "flex", gap: 12, alignItems: "center",
+                }}>
+                  {content}
                 </div>
-              </a>
-            ))}
+              );
+            })}
 
           </div>
           <div>
@@ -740,15 +758,31 @@ function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {[{ id: "name", placeholder: "Your Name", type: "text" }, { id: "email", placeholder: "Email Address", type: "email" }, { id: "subject", placeholder: "Subject (e.g. Hiring Inquiry)" }].map(f => (
-                  <input key={f.id} type={f.type || "text"} placeholder={f.placeholder} required
+                {[
+                  { id: "name", name: "name", placeholder: "Your Name", type: "text", autoComplete: "name", label: "Your Name" },
+                  { id: "email", name: "email", placeholder: "Email Address", type: "email", autoComplete: "email", label: "Email Address" },
+                  { id: "subject", name: "subject", placeholder: "Subject (e.g. Hiring Inquiry)", type: "text", autoComplete: "off", label: "Subject" }
+                ].map(f => (
+                  <input key={f.id} id={f.id} name={f.name} type={f.type || "text"} placeholder={f.placeholder} required
+                    autoComplete={f.autoComplete} aria-label={f.label}
                     value={form[f.id]} onChange={e => setForm({ ...form, [f.id]: e.target.value })}
                     style={inputStyle}
                     onFocus={e => e.target.style.borderColor = "rgba(226,255,93,0.4)"}
                     onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.1)"}
                   />
                 ))}
-                <textarea placeholder="Your message..." required rows={5} value={form.message}
+                <input
+                  type="text"
+                  name="company"
+                  value={honeypot}
+                  onChange={e => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0, zIndex: -1, pointerEvents: "none" }}
+                />
+                <textarea name="message" id="message" placeholder="Your message..." required rows={5} value={form.message}
+                  autoComplete="off" aria-label="Your message"
                   onChange={e => setForm({ ...form, message: e.target.value })}
                   style={{ ...inputStyle, resize: "vertical" }}
                   onFocus={e => e.target.style.borderColor = "rgba(226,255,93,0.4)"}
@@ -812,7 +846,7 @@ export default function App() {
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); });
-    }, { threshold: 0.4 });
+    }, { rootMargin: "-40% 0px -55% 0px", threshold: 0 });
     NAV_LINKS.forEach(l => { const el = document.getElementById(l.toLowerCase()); if (el) observer.observe(el); });
     const heroEl = document.getElementById("hero");
     if (heroEl) observer.observe(heroEl);
@@ -822,7 +856,6 @@ export default function App() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body { background: #0a0a0a; color: #fff; }
