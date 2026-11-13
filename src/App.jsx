@@ -40,18 +40,19 @@ const EXPERIENCE = [
   },
 ];
 
+const FEATURED = {
+  icon: "🌾",
+  category: "React · TypeScript · Full-Stack",
+  title: "Agri Price Tracker — Mandi & Weather Platform",
+  desc: "Built and deployed a full-stack web app that tracks mandi (wholesale market) crop prices and weather forecasts. Designed a scheduled data pipeline with GitHub Actions and idempotent PostgreSQL upserts to ensure the app reads from its own database and stays available when the upstream API is slow or down. Solved data-integrity bugs (variety-based pricing, accurate averages, IST date grouping) with 54 automated tests.",
+  url: "https://agri-price-tracker-three.vercel.app",
+  repo: "https://github.com/rjvi1771/agri-price-tracker",
+  role: "Full-stack architecture, React + Recharts UI, GitHub Actions cron pipeline, PostgreSQL/Supabase schema & upserts, 54 Vitest/Supertest test suite",
+  stats: [{ v: "54", l: "Automated Tests" }, { v: "Full-Stack", l: "React · Node" }, { v: "PostgreSQL", l: "Supabase DB" }],
+  tech: ["React", "TypeScript", "Vite", "Recharts", "Node.js", "Express", "PostgreSQL", "Supabase", "GitHub Actions", "Vitest", "Supertest", "Vercel", "Render"],
+};
+
 const PROJECTS = [
-  {
-    icon: "🌾",
-    category: "React · TypeScript · Full-Stack",
-    title: "Agri Price Tracker — Mandi & Weather Platform",
-    desc: "Built and deployed a full-stack web app that tracks mandi (wholesale market) crop prices and weather forecasts. Designed a scheduled data pipeline with GitHub Actions and idempotent PostgreSQL upserts to ensure the app reads from its own database and stays available when the upstream API is slow or down. Solved data-integrity bugs (variety-based pricing, accurate averages, IST date grouping) with 54 automated tests.",
-    url: "https://agri-price-tracker-three.vercel.app",
-    repo: "https://github.com/rjvi1771/agri-price-tracker",
-    role: "Full-stack architecture, React + Recharts UI, GitHub Actions cron pipeline, PostgreSQL/Supabase schema & upserts, 54 Vitest/Supertest test suite",
-    stats: [{ v: "54", l: "Automated Tests" }, { v: "Full-Stack", l: "React · Node" }, { v: "PostgreSQL", l: "Supabase DB" }],
-    tech: ["React", "TypeScript", "Vite", "Recharts", "Node.js", "Express", "PostgreSQL", "Supabase", "GitHub Actions", "Vitest", "Supertest", "Vercel", "Render"],
-  },
   {
     icon: "🏭",
     category: "Vue.js · SaaS Platform · Industrial",
@@ -525,16 +526,93 @@ function Experience() {
 function Projects() {
   const [ref, vis] = useInView();
   const [filter, setFilter] = useState("All");
-  const filters = ["All", "Full-Stack", "WordPress", "React", "Vue.js"];
-  const filtered = filter === "All" ? PROJECTS : filter === "Full-Stack" ? PROJECTS.filter(p => p.category?.toLowerCase().includes("full-stack")) : PROJECTS.filter(p => p.tech.some(t => t.toLowerCase().includes(filter.toLowerCase())));
+  const filters = ["All", "WordPress", "Vue.js"];
+  const filtered = filter === "All" ? PROJECTS : PROJECTS.filter(p => p.tech.some(t => t.toLowerCase().includes(filter.toLowerCase())));
   return (
     <section id="projects" ref={ref} style={{ padding: "80px 1.25rem", background: "rgba(255,255,255,0.015)" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <SectionLabel>Projects</SectionLabel>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 14, marginBottom: 32 }}>
-          <h2 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: "clamp(1.8rem,4vw,3rem)", color: "#fff", letterSpacing: "-1px", opacity: vis ? 1 : 0, transform: vis ? "none" : "translateY(20px)", transition: "all 0.6s ease", margin: 0 }}>
-            Things I've <span style={{ color: "#e2ff5d", fontStyle: "italic" }}>Built.</span>
-          </h2>
+        <h2 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: "clamp(1.8rem,4vw,3rem)", color: "#fff", letterSpacing: "-1px", opacity: vis ? 1 : 0, transform: vis ? "none" : "translateY(20px)", transition: "all 0.6s ease", margin: "0 0 32px" }}>
+          Things I've <span style={{ color: "#e2ff5d", fontStyle: "italic" }}>Built.</span>
+        </h2>
+
+        {/* Featured Project Card */}
+        <div style={{
+          background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 16, padding: "24px", marginBottom: 48,
+          opacity: vis ? 1 : 0, transform: vis ? "none" : "translateY(20px)", transition: "all 0.6s ease 0.1s",
+        }}>
+          <div className="featured-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.15fr", gap: 28, alignItems: "start" }}>
+            <img
+              src="/agri-price-tracker.png"
+              alt="Agri Price Tracker dashboard screenshot"
+              onError={e => { e.currentTarget.style.display = "none"; }}
+              style={{ width: "100%", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", display: "block" }}
+            />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.55)", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.08em" }}>FEATURED PROJECT</div>
+              <h3 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: "clamp(1.2rem,2.5vw,1.5rem)", color: "#fff", lineHeight: 1.25, margin: "0 0 8px" }}>{FEATURED.title}</h3>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#e2ff5d", marginBottom: 14, fontWeight: 500 }}>GitHub Actions cron → PostgreSQL (Supabase) → Express API (Render) → React app (Vercel)</div>
+              <ul style={{ paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8, marginBottom: 18 }}>
+                {[
+                  "Scheduled sync jobs with idempotent upserts, so the app reads from its own database",
+                  "Per-variety storage with aggregate-on-read; partial days and IST time zones handled",
+                  "54 automated tests (Vitest + Supertest), including a guarded SQL integration test",
+                  "Stale-data banner when prices are older than 3 days",
+                ].map((b, j) => (
+                  <li key={j} style={{
+                    fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.6)",
+                    lineHeight: 1.7, paddingLeft: 16, position: "relative",
+                  }}>
+                    <span style={{ position: "absolute", left: 0, top: "0.55em", width: 5, height: 5, borderRadius: "50%", background: "#e2ff5d", display: "block" }} />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+              <div style={{ display: "flex", gap: 16, marginBottom: 14 }}>
+                {FEATURED.stats.map((s, j) => (
+                  <div key={j}>
+                    <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 15, color: "#e2ff5d" }}>{s.v}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.55)", marginTop: 1 }}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 16 }}>
+                {FEATURED.tech.map(t => (
+                  <span key={t} style={{ background: "rgba(226,255,93,0.06)", border: "1px solid rgba(226,255,93,0.13)", borderRadius: 5, padding: "3px 8px", fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.6)" }}>{t}</span>
+                ))}
+              </div>
+              <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 14 }}>
+                <a href={FEATURED.url} target="_blank" rel="noreferrer" style={{
+                  display: "inline-flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 20,
+                  background: "rgba(226,255,93,0.08)", border: "1px solid rgba(226,255,93,0.2)",
+                  fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 600, color: "#e2ff5d",
+                  textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap",
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(226,255,93,0.18)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "rgba(226,255,93,0.08)"}
+                >Live Site ↗</a>
+                <a href={FEATURED.repo} target="_blank" rel="noreferrer" style={{
+                  display: "inline-flex", alignItems: "center", gap: 4, padding: "6px 14px", borderRadius: 20,
+                  background: "rgba(226,255,93,0.08)", border: "1px solid rgba(226,255,93,0.2)",
+                  fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 600, color: "#e2ff5d",
+                  textDecoration: "none", transition: "background 0.2s", whiteSpace: "nowrap",
+                }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(226,255,93,0.18)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "rgba(226,255,93,0.08)"}
+                >Code ↗</a>
+              </div>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", fontStyle: "italic", lineHeight: 1.5, margin: 0 }}>
+                Note: the public price source has not updated since mid-October, so the live app shows a stale-data banner. The pipeline, tests and stale-data handling are the point.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 14, marginBottom: 16 }}>
+          <div>
+            <SectionLabel>Client work</SectionLabel>
+          </div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.1s" }}>
             {filters.map(f => (
               <button key={f} onClick={() => setFilter(f)} style={{
@@ -548,7 +626,7 @@ function Projects() {
           </div>
         </div>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", marginBottom: 24, opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.15s" }}>
-          {filtered.length} project{filtered.length !== 1 ? "s" : ""} · Client work and personal projects
+          {filtered.length} client project{filtered.length !== 1 ? "s" : ""}
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(300px,100%),1fr))", gap: 16, opacity: vis ? 1 : 0, transition: "all 0.6s ease 0.2s" }}>
           {filtered.map((p, i) => (
@@ -873,6 +951,7 @@ export default function App() {
           .about-grid { grid-template-columns: 1fr !important; }
           .meta-row { grid-template-columns: repeat(2,1fr) !important; }
           .contact-grid { grid-template-columns: 1fr !important; }
+          .featured-grid { grid-template-columns: 1fr !important; }
         }
 
         /* ── Tablet (769px – 1024px) ── */
